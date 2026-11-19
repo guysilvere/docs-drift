@@ -1,0 +1,15 @@
+# Configuration docs-drift (auto-validation du dépôt)
+
+include:
+  - "**/*.md"
+
+exclude:
+  - "node_modules/**"
+  - ".git/**"
+  - "dist/**"
+  - "build/**"
+
+rules:
+  paths/exists: error
+  anchors/exists: error
+  scripts/exists: error

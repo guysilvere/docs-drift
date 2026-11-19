@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+*.log
+.env
+.env.local
+*.local.db
+*.db
+*.db-journal
+*.db-wal
+*.sqlite*
+docs/credentials.md
+.playwright-mcp/
