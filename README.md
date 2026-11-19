@@ -1,6 +1,8 @@
 # docs-drift
 
-> **Linter local et CI qui garantit que votre documentation Markdown reste toujours alignée avec votre vrai code.**
+> **English** | [Français](./README.fr.md)
+>
+> **Local and CI linter that keeps your Markdown documentation strictly aligned with your real codebase.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Node.js >= 20](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org)
@@ -8,63 +10,63 @@
 
 ---
 
-## Pourquoi `docs-drift` ?
+## Why `docs-drift`?
 
-Dans un projet moderne — et encore plus dans un projet assisté par des agents IA (`AGENTS.md`, `BLUEPRINT.md`, `DATABASE.md`, `SPEC-*.md`, `README.md`) — la documentation sert de **source de vérité technique**.
+In modern repositories — especially AI-assisted projects relying on `AGENTS.md`, `BLUEPRINT.md`, `DATABASE.md`, `SPEC-*.md`, and `README.md` — documentation acts as a **technical contract** for both humans and coding agents.
 
-Pourtant, à chaque refactoring :
-- un fichier est renommé ou déplacé → les liens relatifs et captures d'écran cassent ;
-- une section Markdown change de titre → les ancres `#section` deviennent mortes ;
-- un script `package.json` est renommé → le `README.md` recommande une commande qui n'existe plus ;
-- une variable d'environnement, une route API ou une table SQL évolue → humains et agents IA travaillent sur des informations périmées.
+Yet after every refactor:
+- a file is moved or renamed -> relative links and screenshots break silently;
+- a Markdown heading changes -> internal `#anchor` links rot;
+- a `package.json` script is renamed -> the `README.md` recommends a command that no longer exists;
+- an environment variable, SvelteKit API route, or SQL column changes -> humans and AI agents work off stale information.
 
-Les vérificateurs de liens classiques ne testent que les URLs HTTP externes. **`docs-drift`** contrôle directement la **cohérence entre votre Markdown et votre dépôt**, en local comme en CI, en moins de 5 secondes.
+Traditional link checkers only test external HTTP URLs. **`docs-drift`** verifies **documentation-to-code consistency** locally and in CI in under 5 seconds.
 
-### Principes de conception
+### Design Principles
 
-- **100 % local et statique** : aucun code envoyé vers une API externe, aucune exécution de script du dépôt analysé.
-- **Zéro faux positif inutile** : ignore les URLs externes (`http://`, `mailto:`), les placeholders d'exemples (`<projet>`, `${VAR}`) et les commentaires shell.
-- **Déterministe et rapide** : AST Markdown (`remark`/`mdast`) avec numéros de ligne et colonne exacts.
-- **CI-ready** : sortie lisible sans couleur et codes de sortie immuables (`0`, `1`, `2`).
+- **100% local and static**: never sends code to external APIs, never executes scripts from the target repository.
+- **Low noise**: ignores external URLs (`http://`, `mailto:`), placeholder tokens (`<project>`, `${VAR}`), and shell comments.
+- **Fast and deterministic**: Markdown AST (`remark`/`mdast`) with exact line and column numbers.
+- **CI-ready**: clean color-free output, JSON/SARIF/Markdown reporters, and immutable exit codes (`0`, `1`, `2`).
 
 ---
 
-## Démarrage rapide
+## Quick Start
 
-### Installation & exécution locale
+### Local Installation
 
-> Consultez le [Guide d'installation détaillé](./docs/INSTALLATION.md) pour la configuration complète (installation globale `npm link`, GitHub Action composite, upload SARIF Code Scanning, hook pré-commit).
+> See the [Detailed Installation Guide](./docs/INSTALLATION.md) for full setup instructions (`npm link`, composite GitHub Action, SARIF Code Scanning upload, pre-commit hook).
 
 ```bash
-# Cloner le dépôt
+# Clone the repository
 git clone https://github.com/guysilvere/docs-drift.git
 cd docs-drift
 
-# Installer et compiler
+# Install and build
 npm ci
 npm run build
 
-# Lancer la vérification sur le dépôt courant
+# Run against the current repository
 node dist/cli.js check
 ```
 
-### Commandes CLI
+### CLI Commands
 
-| Commande | Description |
+| Command | Description |
 | --- | --- |
-| `docs-drift check` | Vérifie tous les fichiers Markdown du dépôt (commande par défaut) |
-| `docs-drift check --cwd <dir>` | Cible un autre dossier de dépôt |
-| `docs-drift check --stale <durée>` | Détecte la documentation plus ancienne que `<durée>` (ex. `90d`, `12w`, `48h`) |
-| `docs-drift check --format <fmt>` | Format de sortie : `text` (défaut), `json`, `sarif`, `markdown` |
-| `docs-drift check --fix` | Corrige prudemment les chemins déplacés sans ambiguïté |
-| `docs-drift check --fix --dry-run` | Prévisualise les corrections `--fix` sans modifier les fichiers |
-| `docs-drift init` | Génère un fichier `.docs-drift.yml` prêt à l'emploi |
-| `docs-drift init --force` | Écrase un fichier `.docs-drift.yml` existant |
-| `docs-drift explain <rule>` | Affiche la documentation et des exemples pour une règle |
-| `docs-drift --help` | Affiche l'aide complète |
-| `docs-drift --version` | Affiche la version de la CLI |
+| `docs-drift check` | Lint all Markdown files in the repository (default command) |
+| `docs-drift check --cwd <dir>` | Target a specific repository directory |
+| `docs-drift check --stale <duration>` | Flag docs older than `<duration>` in Git history (e.g. `90d`, `12w`, `48h`) |
+| `docs-drift check --format <fmt>` | Output format: `text` (default), `json`, `sarif`, `markdown` |
+| `docs-drift check --fix` | Prudently rewrite unambiguously moved file paths |
+| `docs-drift check --fix --dry-run` | Preview `--fix` changes without modifying files |
+| `docs-drift init` | Generate a starter `.docs-drift.yml` file |
+| `docs-drift init --force` | Overwrite an existing `.docs-drift.yml` |
+| `docs-drift explain <rule>` | Print detailed documentation and examples for a rule |
+| `docs-drift --help` | Display help |
+| `docs-drift --version` | Print CLI version |
 
-### Exemple de sortie
+### Example Output
 
 ```text
 README.md:14:12 ERROR [paths/exists] Chemin introuvable : "./docs/OLD_GUIDE.md"
@@ -74,50 +76,50 @@ README.md:41:1  ERROR [scripts/exists] Script "deploy:old" introuvable dans pack
 docs-drift FAIL — 8 fichier(s) analysé(s), 3 erreur(s), 0 avertissement(s) (19 ms)
 ```
 
-### Codes de sortie
+### Exit Codes
 
-| Code | Signification |
+| Code | Meaning |
 | --- | --- |
-| `0` | Aucune erreur détectée (des avertissements `warn` peuvent être présents) |
-| `1` | Au moins une violation de sévérité `error` détectée |
-| `2` | Erreur de configuration (`.docs-drift.yml` invalide) ou d'exécution |
+| `0` | No errors found (warnings may still be reported) |
+| `1` | One or more `error`-level violations detected |
+| `2` | Configuration (`.docs-drift.yml`) or runtime error |
 
 ---
 
-## Règles disponibles (`v0.4.0`)
+## Available Rules (`v0.4.0`)
 
-| Règle | Sévérité par défaut | Ce qu'elle vérifie |
+| Rule | Default Severity | What It Checks |
 | --- | --- | --- |
-| `paths/exists` | `error` | Chaque lien relatif, dossier, image locale ou référence `file://` existe bien sur disque. |
-| `anchors/exists` | `error` | Chaque ancre `#section` (dans le même fichier ou vers un autre `.md`) correspond à un titre existant (slug compatible GitHub). |
-| `scripts/exists` | `error` | Chaque commande `npm run <cmd>`, `pnpm run <cmd>` ou `yarn run <cmd>` citée existe dans `package.json`. |
-| `env/exists` | `error` | Chaque variable d'environnement documentée (`process.env.X`, `import.meta.env.X`, `$X`, blocs `env`) existe dans `.env.example`. |
-| `git/stale` | `warn` | Détecte les docs non mises à jour depuis `--stale <durée>` ou en retard sur les fichiers de code mappés. |
-| `sveltekit/routes` | `error` | Vérifie les routes API et méthodes HTTP documentées (`GET /api/users/:id`) contre `src/routes/**/+server.ts` et `+page.svelte`. |
-| `sql/schema` | `error` | Reconstruit statiquement le schéma SQL depuis `migrations/**/*.sql` et vérifie les tables/colonnes documentées (`DATABASE.md`, blocs `sql`, `sql:table.col`). |
+| `paths/exists` | `error` | Every relative link, directory, local image, or `file://` reference exists on disk. |
+| `anchors/exists` | `error` | Every `#section` anchor (same file or cross-file `.md`) matches an existing heading (GitHub-compatible slug). |
+| `scripts/exists` | `error` | Every documented `npm run <cmd>`, `pnpm run <cmd>`, or `yarn run <cmd>` exists in `package.json`. |
+| `env/exists` | `error` | Every documented environment variable (`process.env.X`, `import.meta.env.X`, `$X`, `env` blocks) exists in `.env.example`. |
+| `git/stale` | `warn` | Flags docs not updated within `--stale <duration>` or lagging behind mapped code files. |
+| `sveltekit/routes` | `error` | Verifies documented API routes and HTTP methods (`GET /api/users/:id`) against `src/routes/**/+server.ts` and `+page.svelte`. |
+| `sql/schema` | `error` | Statically reconstructs SQL schema from `migrations/**/*.sql` and validates documented tables/columns (`DATABASE.md`, `sql` blocks, `sql:table.col`). |
 
-### Balises inline & exceptions datées
+### Inline Directives & Expiring Exceptions
 
-Vous pouvez ignorer ponctuellement une règle avec justification et date d'expiration (une exception expirée remonte automatiquement en avertissement) :
+Suppress specific violations with a justification and an optional expiration date (expired exceptions automatically surface as warnings):
 
 ```markdown
-<!-- docs-drift: ignore-next-line paths/exists reason="Migration en cours" expires="2026-12-31" -->
-Voir [ancien guide](./docs/legacy.md).
+<!-- docs-drift: ignore-next-line paths/exists reason="Migration in progress" expires="2026-12-31" -->
+See [legacy guide](./docs/legacy.md).
 
 <!-- docs-drift: disable scripts/exists -->
 ...
 <!-- docs-drift: enable scripts/exists -->
 ```
 
-### Prochain jalon (voir [ROADMAP](./docs/ROADMAP.md))
+### Next Milestone (see [ROADMAP](./docs/ROADMAP.md))
 
-- **Stabilisation & npm (`v1.0.0`)** : publication officielle sur npm (`npx docs-drift`) et stabilisation des schémas publics.
+- **Stabilization & npm (`v1.0.0`)**: official npm release (`npx docs-drift`) and public schema stability guarantee.
 
 ---
 
 ## Configuration (`.docs-drift.yml`)
 
-Créez le fichier avec `docs-drift init` ou manuellement à la racine du dépôt :
+Create with `docs-drift init` or manually at the repository root:
 
 ```yaml
 include:
@@ -146,7 +148,7 @@ stale:
 exceptions:
   - file: "README.md"
     rule: "paths/exists"
-    reason: "Lien en cours de migration"
+    reason: "Link being migrated"
     expires: "2026-12-31"
 
 rules:
@@ -159,13 +161,13 @@ rules:
   sql/schema: error        # error | warn | off
 ```
 
-Si aucun `.docs-drift.yml` n'est présent, `docs-drift` applique automatiquement ces valeurs par défaut.
+When `.docs-drift.yml` is absent, `docs-drift` uses these safe defaults automatically.
 
 ---
 
-## Intégration CI (GitHub Actions)
+## CI Integration (GitHub Actions)
 
-Utilisez directement la GitHub Action composite ([action.yml](./action.yml)) dans votre workflow (voir le [Guide d'installation](./docs/INSTALLATION.md) pour SARIF / Code Scanning) :
+Use the composite GitHub Action ([action.yml](./action.yml)) directly in your workflow (see the [Installation Guide](./docs/INSTALLATION.md) for SARIF / Code Scanning):
 
 ```yaml
 - uses: actions/checkout@v4
@@ -180,46 +182,47 @@ Utilisez directement la GitHub Action composite ([action.yml](./action.yml)) dan
 
 ---
 
-## Développement & contribution
+## Development & Contributing
 
-### Commandes utiles
+### Scripts
 
 ```bash
-npm run dev        # Exécuter la CLI directement via tsx
-npm run typecheck  # Vérification TypeScript stricte (tsc --noEmit)
-npm test           # Tests Vitest en mode watch
-npm run test:run   # Suite complète Vitest (CI)
-npm run build      # Compilation TypeScript vers dist/
+npm run dev        # Run CLI directly via tsx
+npm run typecheck  # Strict TypeScript check (tsc --noEmit)
+npm test           # Vitest in watch mode
+npm run test:run   # Full Vitest suite (CI)
+npm run build      # Compile TypeScript to dist/
 ```
 
-### Architecture du projet
+### Project Structure
 
 ```text
 docs-drift/
 ├── src/
-│   ├── cli.ts                  # Point d'entrée CLI (check, init, explain)
-│   ├── index.ts                # Exports programmatiques
-│   ├── types.ts                # Types stricts (Violation, CheckSummary, RuleId)
-│   ├── config/                 # Schéma Zod & chargeur .docs-drift.yml
-│   ├── collectors/             # Collecte de fichiers (globs include/exclude)
-│   ├── markdown/               # Parser remark/mdast & slugger GitHub
-│   ├── rules/                  # Règles paths, anchors, scripts + registre
-│   ├── engine/                 # Orchestrateur d'exécution
-│   └── reporters/              # Formateur terminal
-├── tests/                      # Tests unitaires et fixtures Vitest
-└── docs/                       # Documentation vivante (BLUEPRINT, ROADMAP, specs, ADR)
+│   ├── cli.ts                  # CLI entrypoint (check, init, explain)
+│   ├── index.ts                # Programmatic exports
+│   ├── types.ts                # Strict types (Violation, CheckSummary, RuleId)
+│   ├── config/                 # Zod schema & .docs-drift.yml loader
+│   ├── collectors/             # File, env, Git, SvelteKit, and SQL collectors
+│   ├── markdown/               # remark/mdast parser & GitHub slugger
+│   ├── rules/                  # Rule implementations + registry
+│   ├── engine/                 # Runner, ignore engine, and prudent --fix
+│   └── reporters/              # text, json, sarif, and markdown reporters
+├── tests/                      # Vitest unit & integration fixtures
+├── action.yml                  # Composite GitHub Action
+└── docs/                       # Living documentation (EN + FR)
 ```
 
-### Documentation de référence
+### Reference Documentation
 
-- [Guide d'installation](./docs/INSTALLATION.md) — installation locale, GitHub Action, SARIF et hooks Git
-- [BLUEPRINT](./docs/BLUEPRINT.md) — architecture, périmètre, sécurité et choix techniques
-- [ROADMAP](./docs/ROADMAP.md) — feuille de route détaillée (`v0.1.0` → `v3.0.0`)
-- [Spécifications](./docs/specs/SPEC-001-cli-paths-anchors-scripts.md) — specs par jalon (`SPEC-001` à `SPEC-004`)
-- [ADR](./docs/adr/README.md) — décisions d'architecture
+- [Installation Guide](./docs/INSTALLATION.md) ([FR](./docs/fr/INSTALLATION.md)) — local setup, GitHub Action, SARIF, and Git hooks
+- [BLUEPRINT](./docs/BLUEPRINT.md) ([FR](./docs/fr/BLUEPRINT.md)) — architecture, scope, security, and stack choices
+- [ROADMAP](./docs/ROADMAP.md) ([FR](./docs/fr/ROADMAP.md)) — detailed milestones (`v0.1.0` -> `v3.0.0`)
+- [Specifications](./docs/specs/SPEC-001-cli-paths-anchors-scripts.md) — per-milestone specs (`SPEC-001` to `SPEC-004`)
+- [ADR](./docs/adr/README.md) — architecture decision records
 
 ---
 
-## Licence
+## Author & License
 
-Distribué sous licence [MIT](./LICENSE).
+Developed by **Silvere Meya**. Released under the [MIT License](./LICENSE).
