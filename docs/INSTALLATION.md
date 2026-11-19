@@ -1,10 +1,22 @@
 # Installation Guide — docs-drift
 
-> **English** | [Français](./fr/INSTALLATION.md) · Version: `v0.4.0` · Requirements: **Node.js >= 20** and **Git** (optional for `git/stale`).
+> **English** | [Français](./fr/INSTALLATION.md) · Version: `v0.5.0` · Package: `docs-drift-cli` · Requirements: **Node.js >= 20** and **Git** (optional for `git/stale`).
 
 ---
 
-## 1. Local Installation (CLI / Development)
+## 1. Install via npm (Recommended)
+
+```bash
+# Run on demand without installing
+npx docs-drift-cli check
+
+# Or add to your project devDependencies
+npm install -D docs-drift-cli
+npx docs-drift init
+npx docs-drift check
+```
+
+## 1bis. Local Installation from Source (Contributors)
 
 ### Option A — Clone and Build from GitHub
 

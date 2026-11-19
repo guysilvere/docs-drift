@@ -15,7 +15,7 @@ import { isKnownRule, RULES_REGISTRY } from './rules/registry.js';
 export const EXIT_OK = 0;
 export const EXIT_VIOLATIONS = 1;
 export const EXIT_ERROR = 2;
-export const VERSION = '0.4.0';
+export const VERSION = '0.5.0';
 
 export type OutputFormat = 'text' | 'json' | 'sarif' | 'markdown';
 const VALID_FORMATS = new Set<OutputFormat>(['text', 'json', 'sarif', 'markdown']);
