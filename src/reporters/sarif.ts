@@ -74,7 +74,7 @@ export function formatSarifReport(summary: CheckSummary, version: string): strin
           driver: {
             name: 'docs-drift',
             version,
-            informationUri: 'https://github.com/guysilvere/docs-drift',
+            informationUri: 'https://github.com/guysilvere/docs-drift-cli',
             rules,
           },
         },

@@ -1,13 +1,13 @@
 # Changelog
 
-All notable changes to `docs-drift-cli` (`docs-drift`) are documented in this file.
+All notable changes to `docs-drift-cli` are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
 ## [0.5.0] - 2026-11-19
 
 ### Added
-- npm package metadata and distribution setup under `docs-drift-cli` (`bin`: `docs-drift` & `docs-drift-cli`, ESM `exports`, `prepublishOnly` guard).
+- npm package metadata and distribution setup under `docs-drift-cli` (`bin`: `docs-drift-cli` & `docs-drift-cli`, ESM `exports`, `prepublishOnly` guard).
 - Automated npm publication workflow with provenance ([publish-npm.yml](./.github/workflows/publish-npm.yml)).
 - Bilingual EN/FR documentation (`README.md`, `README.fr.md`, `docs/`, `docs/fr/`).
 - `CHANGELOG.md`.

@@ -5,13 +5,13 @@
   "author": "Silvere Meya",
   "license": "MIT",
   "type": "module",
-  "homepage": "https://github.com/guysilvere/docs-drift#readme",
+  "homepage": "https://github.com/guysilvere/docs-drift-cli#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/guysilvere/docs-drift.git"
+    "url": "git+https://github.com/guysilvere/docs-drift-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/guysilvere/docs-drift/issues"
+    "url": "https://github.com/guysilvere/docs-drift-cli/issues"
   },
   "keywords": [
     "markdown",

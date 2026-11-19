@@ -12,8 +12,8 @@ export class ConfigError extends Error {
   }
 }
 
-export const DEFAULT_CONFIG_TEMPLATE = `# Configuration docs-drift
-# Documentation : https://github.com/guysilvere/docs-drift
+export const DEFAULT_CONFIG_TEMPLATE = `# Configuration docs-drift-cli
+# Documentation : https://github.com/guysilvere/docs-drift-cli
 
 include:
   - "**/*.md"

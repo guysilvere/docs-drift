@@ -1,4 +1,4 @@
-# docs-drift
+# docs-drift-cli
 
 > **English** | [Français](./README.fr.md)
 >
@@ -11,7 +11,7 @@
 
 ---
 
-## Why `docs-drift`?
+## Why `docs-drift-cli`?
 
 In modern repositories — especially AI-assisted projects relying on `AGENTS.md`, `BLUEPRINT.md`, `DATABASE.md`, `SPEC-*.md`, and `README.md` — documentation acts as a **technical contract** for both humans and coding agents.
 
@@ -21,7 +21,7 @@ Yet after every refactor:
 - a `package.json` script is renamed -> the `README.md` recommends a command that no longer exists;
 - an environment variable, SvelteKit API route, or SQL column changes -> humans and AI agents work off stale information.
 
-Traditional link checkers only test external HTTP URLs. **`docs-drift`** verifies **documentation-to-code consistency** locally and in CI in under 5 seconds.
+Traditional link checkers only test external HTTP URLs. **`docs-drift-cli`** verifies **documentation-to-code consistency** locally and in CI in under 5 seconds.
 
 ### Design Principles
 
@@ -44,8 +44,8 @@ npx docs-drift-cli check
 
 # Or install as a dev dependency
 npm install -D docs-drift-cli
-npx docs-drift init
-npx docs-drift check
+npx docs-drift-cli init
+npx docs-drift-cli check
 ```
 
 ### CLI Commands
@@ -159,7 +159,7 @@ rules:
   sql/schema: error        # error | warn | off
 ```
 
-When `.docs-drift.yml` is absent, `docs-drift` uses these safe defaults automatically.
+When `.docs-drift.yml` is absent, `docs-drift-cli` uses these safe defaults automatically.
 
 ---
 
@@ -172,7 +172,7 @@ Use the composite GitHub Action ([action.yml](./action.yml)) directly in your wo
   with:
     fetch-depth: 0
 
-- uses: guysilvere/docs-drift@v0.4.0
+- uses: guysilvere/docs-drift-cli@v0.5.0
   with:
     format: text
     stale: 90d
@@ -195,7 +195,7 @@ npm run build      # Compile TypeScript to dist/
 ### Project Structure
 
 ```text
-docs-drift/
+docs-drift-cli/
 ├── src/
 │   ├── cli.ts                  # CLI entrypoint (check, init, explain)
 │   ├── index.ts                # Programmatic exports

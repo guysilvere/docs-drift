@@ -1,4 +1,4 @@
-# Installation Guide — docs-drift
+# Installation Guide — docs-drift-cli
 
 > **English** | [Français](./fr/INSTALLATION.md) · Version: `v0.5.0` · Package: `docs-drift-cli` · Requirements: **Node.js >= 20** and **Git** (optional for `git/stale`).
 
@@ -12,8 +12,8 @@ npx docs-drift-cli check
 
 # Or add to your project devDependencies
 npm install -D docs-drift-cli
-npx docs-drift init
-npx docs-drift check
+npx docs-drift-cli init
+npx docs-drift-cli check
 ```
 
 ## 1bis. Local Installation from Source (Contributors)
@@ -21,8 +21,8 @@ npx docs-drift check
 ### Option A — Clone and Build from GitHub
 
 ```bash
-git clone https://github.com/guysilvere/docs-drift.git
-cd docs-drift
+git clone https://github.com/guysilvere/docs-drift-cli.git
+cd docs-drift-cli
 npm ci
 npm run build
 ```
@@ -34,7 +34,7 @@ node dist/cli.js --version
 node dist/cli.js check
 ```
 
-### Option B — Make `docs-drift` Globally Available
+### Option B — Make `docs-drift-cli` Globally Available
 
 From the cloned directory:
 
@@ -42,7 +42,7 @@ From the cloned directory:
 npm link
 ```
 
-You can then run `docs-drift` in **any project**:
+You can then run `docs-drift-cli` in **any project**:
 
 ```bash
 cd /path/to/your-project
@@ -106,7 +106,7 @@ stale:
 
 ## 3. CI Integration — GitHub Actions
 
-`docs-drift` ships a 100% local **composite GitHub Action** ([action.yml](../action.yml)) that never executes any script from your repository.
+`docs-drift-cli` ships a 100% local **composite GitHub Action** ([action.yml](../action.yml)) that never executes any script from your repository.
 
 ### Minimal Workflow (Fails PR on Error)
 
@@ -128,7 +128,7 @@ jobs:
         with:
           fetch-depth: 0 # Only required when using --stale
 
-      - uses: guysilvere/docs-drift@v0.4.0
+      - uses: guysilvere/docs-drift-cli@v0.5.0
         with:
           format: text
           stale: 90d
@@ -152,7 +152,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: guysilvere/docs-drift@v0.4.0
+      - uses: guysilvere/docs-drift-cli@v0.5.0
         continue-on-error: true
         with:
           format: sarif

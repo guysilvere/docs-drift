@@ -5,7 +5,7 @@
 
 ## Contexte
 
-- `docs-drift` doit s'exécuter instantanément en local (`npx docs-drift`) et en CI (GitHub Action) sur des dépôts JS/TS/SvelteKit sans infrastructure serveur ni clé API.
+- `docs-drift-cli` doit s'exécuter instantanément en local (`npx docs-drift`) et en CI (GitHub Action) sur des dépôts JS/TS/SvelteKit sans infrastructure serveur ni clé API.
 
 ## Décision
 

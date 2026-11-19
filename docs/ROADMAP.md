@@ -1,4 +1,4 @@
-# ROADMAP — docs-drift
+# ROADMAP — docs-drift-cli
 
 > **English** | [Français](./fr/ROADMAP.md) · Status: ACTIVE · Reference: [BLUEPRINT.md](./BLUEPRINT.md)
 

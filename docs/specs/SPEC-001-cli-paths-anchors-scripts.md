@@ -5,13 +5,13 @@
 ## 1. Intent
 
 - **Problème** : les liens vers des fichiers locaux, images, ancres Markdown ou scripts `package.json` cassent silencieusement lors des refactorings.
-- **Objectif** : fournir une CLI `docs-drift` rapide, déterministe et sans fausse alerte couvrant ces 3 familles de références dès le premier jalon.
+- **Objectif** : fournir une CLI `docs-drift-cli` rapide, déterministe et sans fausse alerte couvrant ces 3 familles de références dès le premier jalon.
 
 ## 2. User Stories
 
-- En tant que mainteneur, je veux exécuter `npx docs-drift check` pour lister les chemins, médias et ancres invalides avec fichier et ligne exacts.
+- En tant que mainteneur, je veux exécuter `npx docs-drift-cli check` pour lister les chemins, médias et ancres invalides avec fichier et ligne exacts.
 - En tant que mainteneur, je veux vérifier que chaque commande `npm run <script>` citée dans la doc existe dans `package.json`.
-- En tant que mainteneur, je veux générer une configuration initiale via `npx docs-drift init`.
+- En tant que mainteneur, je veux générer une configuration initiale via `npx docs-drift-cli init`.
 
 ## 3. Exigences
 

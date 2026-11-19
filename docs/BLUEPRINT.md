@@ -1,4 +1,4 @@
-# BLUEPRINT — docs-drift
+# BLUEPRINT — docs-drift-cli
 
 > **English** | [Français](./fr/BLUEPRINT.md) · Status: VALIDATED · Stack: Strict TypeScript + Node CLI + GitHub Action · Silvere Meya
 
@@ -11,7 +11,7 @@
 
 ## 2. Value Proposition
 
-- `docs-drift` is an ultra-fast local and CI linter that catches stale technical references in Markdown and offers actionable fixes before a human or AI agent relies on them.
+- `docs-drift-cli` is an ultra-fast local and CI linter that catches stale technical references in Markdown and offers actionable fixes before a human or AI agent relies on them.
 
 ## 3. Tech Stack
 

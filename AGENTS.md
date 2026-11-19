@@ -1,10 +1,10 @@
-# AGENTS.md — docs-drift
+# AGENTS.md — docs-drift-cli
 
-Point d'entrée unique pour les agents IA sur `docs-drift`. Ne charger que le fichier utile.
+Point d'entrée unique pour les agents IA sur `docs-drift-cli`. Ne charger que le fichier utile.
 
 ## Projet
 
-- **Nom** : `docs-drift` — linter CLI & GitHub Action de cohérence documentation Markdown ↔ code réel.
+- **Nom** : `docs-drift-cli` — linter CLI & GitHub Action de cohérence documentation Markdown ↔ code réel.
 - **Stack** : Node.js >= 20, TypeScript strict (ESM), `remark`/`mdast`, Zod, Vitest.
 - **Nature** : CLI pure sans serveur ni base de données (100 % local, aucune exécution de script tiers).
 
