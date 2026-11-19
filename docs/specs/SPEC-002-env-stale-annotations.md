@@ -1,6 +1,6 @@
 # SPEC-002 — Variables d'environnement, dérive Git et balises
 
-> Statut : DRAFT · Jalon : 2 (`v0.2.0`) · Référence : [BLUEPRINT.md](../BLUEPRINT.md)
+> Statut : DONE · Jalon : 2 (`v0.2.0`) · Référence : [BLUEPRINT.md](../BLUEPRINT.md)
 
 ## 1. Intent
 

@@ -1,6 +1,13 @@
 import type { RuleSeverity } from './config/schema.js';
 
-export type RuleId = 'paths/exists' | 'anchors/exists' | 'scripts/exists';
+export type RuleId =
+  | 'paths/exists'
+  | 'anchors/exists'
+  | 'scripts/exists'
+  | 'env/exists'
+  | 'git/stale'
+  | 'sveltekit/routes'
+  | 'sql/schema';
 
 export interface Violation {
   ruleId: RuleId;
@@ -26,6 +33,7 @@ export interface CheckSummary {
   filesChecked: number;
   errors: number;
   warnings: number;
+  suppressed: number;
   durationMs: number;
   violations: Violation[];
 }
