@@ -9,7 +9,8 @@
 | `v0.1.0` | Jalon 1 — Socle MVP | CLI, config `.docs-drift.yml`, chemins, médias, ancres locales, scripts `package.json` | [SPEC-001](./specs/SPEC-001-cli-paths-anchors-scripts.md) | `DONE` |
 | `v0.2.0` | Jalon 2 — Env & fraîcheur | Variables `.env.example`, dérive Git (`--stale`), balises `<!-- docs-drift: ... -->`, exceptions datées | [SPEC-002](./specs/SPEC-002-env-stale-annotations.md) | `DONE` |
 | `v0.3.0` | Jalon 3 — Code & schémas | Routes SvelteKit (`+server.ts`, `+page.svelte`), migrations SQL (tables & colonnes) | [SPEC-003](./specs/SPEC-003-sveltekit-routes-sql.md) | `DONE` |
-| `v1.0.0` | Jalon 4 — CI & finition | Sorties JSON/SARIF/Markdown, GitHub Action composite, `--fix` prudent, publication npm | [SPEC-004](./specs/SPEC-004-ci-sarif-autofix.md) | `PLANNED` |
+| `v0.4.0` | Jalon 4 — CI, SARIF & `--fix` | Sorties JSON/SARIF/Markdown, GitHub Action composite, `--fix` prudent, guide d'installation | [SPEC-004](./specs/SPEC-004-ci-sarif-autofix.md) | `DONE` |
+| `v1.0.0` | Stabilisation & npm | Publication registre npm (`npx docs-drift`), stabilisation API publique, benchmarks `< 5 s` | — | `PLANNED` |
 | `v2.0.0` | Écosystème élargi | Extracteurs Drizzle, Prisma, Rails, Django ; vérification bidirectionnelle code ↔ docs | — | `BACKLOG` |
 | `v3.0.0` | Temps réel & gouvernance | Mode `--watch` pour agents IA, plugin éditeur, règles d'organisation | — | `BACKLOG` |
 
@@ -39,13 +40,18 @@
 - Extracteur migrations SQL (tables et colonnes déclarées dans `migrations/*.sql`).
 - Règles `sveltekit/routes` et `sql/schema`.
 
-### Jalon 4 — CI, SARIF & `--fix` (`v1.0.0`)
+### Jalon 4 — CI, SARIF & `--fix` (`v0.4.0`)
 
 - Formateurs `text`, `json`, `sarif` (annotations PR GitHub), `markdown` (commentaire PR).
-- GitHub Action composite épinglable par SHA.
-- Mode `--fix` prudent (renommages Git / correspondance unique de fichier).
+- GitHub Action composite ([action.yml](../action.yml)) épinglable par SHA.
+- Mode `--fix` prudent (correspondance unique de fichier + `--dry-run`).
 - Masquage des chemins sensibles dans les sorties publiques.
-- Publication npm (`npx docs-drift`) + documentation complète.
+- Guide d'installation détaillé ([INSTALLATION.md](./INSTALLATION.md)).
+
+### Stabilisation & publication npm (`v1.0.0`)
+
+- Publication officielle sur npm (`npx docs-drift`).
+- Garantie de stabilité des schémas JSON/SARIF et des codes de sortie.
 
 ## Critères de passage à `v1.0.0`
 

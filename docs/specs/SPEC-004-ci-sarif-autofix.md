@@ -1,6 +1,6 @@
 # SPEC-004 — CI GitHub Action, SARIF et mode `--fix`
 
-> Statut : DRAFT · Jalon : 4 (`v1.0.0`) · Référence : [BLUEPRINT.md](../BLUEPRINT.md)
+> Statut : DONE · Jalon : 4 (`v0.4.0`) · Référence : [BLUEPRINT.md](../BLUEPRINT.md)
 
 ## 1. Intent
 

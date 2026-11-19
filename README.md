@@ -33,13 +33,15 @@ Les vérificateurs de liens classiques ne testent que les URLs HTTP externes. **
 
 ### Installation & exécution locale
 
+> Consultez le [Guide d'installation détaillé](./docs/INSTALLATION.md) pour la configuration complète (installation globale `npm link`, GitHub Action composite, upload SARIF Code Scanning, hook pré-commit).
+
 ```bash
 # Cloner le dépôt
 git clone https://github.com/guysilvere/docs-drift.git
 cd docs-drift
 
 # Installer et compiler
-npm install
+npm ci
 npm run build
 
 # Lancer la vérification sur le dépôt courant
@@ -53,6 +55,9 @@ node dist/cli.js check
 | `docs-drift check` | Vérifie tous les fichiers Markdown du dépôt (commande par défaut) |
 | `docs-drift check --cwd <dir>` | Cible un autre dossier de dépôt |
 | `docs-drift check --stale <durée>` | Détecte la documentation plus ancienne que `<durée>` (ex. `90d`, `12w`, `48h`) |
+| `docs-drift check --format <fmt>` | Format de sortie : `text` (défaut), `json`, `sarif`, `markdown` |
+| `docs-drift check --fix` | Corrige prudemment les chemins déplacés sans ambiguïté |
+| `docs-drift check --fix --dry-run` | Prévisualise les corrections `--fix` sans modifier les fichiers |
 | `docs-drift init` | Génère un fichier `.docs-drift.yml` prêt à l'emploi |
 | `docs-drift init --force` | Écrase un fichier `.docs-drift.yml` existant |
 | `docs-drift explain <rule>` | Affiche la documentation et des exemples pour une règle |
@@ -79,7 +84,7 @@ docs-drift FAIL — 8 fichier(s) analysé(s), 3 erreur(s), 0 avertissement(s) (1
 
 ---
 
-## Règles disponibles (`v0.3.0`)
+## Règles disponibles (`v0.4.0`)
 
 | Règle | Sévérité par défaut | Ce qu'elle vérifie |
 | --- | --- | --- |
@@ -106,7 +111,7 @@ Voir [ancien guide](./docs/legacy.md).
 
 ### Prochain jalon (voir [ROADMAP](./docs/ROADMAP.md))
 
-- **Jalon 4 (`v1.0.0`)** : sorties JSON / SARIF 2.1.0 / Markdown PR, GitHub Action composite, mode `--fix` prudent.
+- **Stabilisation & npm (`v1.0.0`)** : publication officielle sur npm (`npx docs-drift`) et stabilisation des schémas publics.
 
 ---
 
@@ -160,13 +165,17 @@ Si aucun `.docs-drift.yml` n'est présent, `docs-drift` applique automatiquement
 
 ## Intégration CI (GitHub Actions)
 
-Exemple de job CI bloquant sur Pull Request (voir [.github/workflows/ci.yml](./.github/workflows/ci.yml)) :
+Utilisez directement la GitHub Action composite ([action.yml](./action.yml)) dans votre workflow (voir le [Guide d'installation](./docs/INSTALLATION.md) pour SARIF / Code Scanning) :
 
 ```yaml
-- name: Vérifier la cohérence de la documentation
-  run: |
-    npm run build
-    node dist/cli.js check
+- uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
+
+- uses: guysilvere/docs-drift@v0.4.0
+  with:
+    format: text
+    stale: 90d
 ```
 
 ---
@@ -203,6 +212,7 @@ docs-drift/
 
 ### Documentation de référence
 
+- [Guide d'installation](./docs/INSTALLATION.md) — installation locale, GitHub Action, SARIF et hooks Git
 - [BLUEPRINT](./docs/BLUEPRINT.md) — architecture, périmètre, sécurité et choix techniques
 - [ROADMAP](./docs/ROADMAP.md) — feuille de route détaillée (`v0.1.0` → `v3.0.0`)
 - [Spécifications](./docs/specs/SPEC-001-cli-paths-anchors-scripts.md) — specs par jalon (`SPEC-001` à `SPEC-004`)

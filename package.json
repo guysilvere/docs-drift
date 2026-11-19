@@ -1,6 +1,6 @@
 {
   "name": "docs-drift",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Linter local et CI qui vérifie la cohérence stricte entre documentation Markdown et code réel",
   "license": "MIT",
   "type": "module",

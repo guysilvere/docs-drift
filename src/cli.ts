@@ -3,24 +3,38 @@ import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseDurationMs } from './collectors/git.js';
-import { CONFIG_FILENAME, ConfigError, writeDefaultConfig } from './config/loader.js';
+import { CONFIG_FILENAME, ConfigError, loadConfig, writeDefaultConfig } from './config/loader.js';
+import { applyPrudentFixes } from './engine/fixer.js';
 import { runCheck, type RunCheckOptions } from './engine/runner.js';
+import { formatJsonReport } from './reporters/json.js';
+import { formatMarkdownReport } from './reporters/markdown.js';
+import { formatSarifReport } from './reporters/sarif.js';
 import { formatTextReport } from './reporters/text.js';
 import { isKnownRule, RULES_REGISTRY } from './rules/registry.js';
 
 export const EXIT_OK = 0;
 export const EXIT_VIOLATIONS = 1;
 export const EXIT_ERROR = 2;
-export const VERSION = '0.3.0';
+export const VERSION = '0.4.0';
+
+export type OutputFormat = 'text' | 'json' | 'sarif' | 'markdown';
+const VALID_FORMATS = new Set<OutputFormat>(['text', 'json', 'sarif', 'markdown']);
 
 const HELP_TEXT = `docs-drift v${VERSION} — Linter de cohérence documentation Markdown <-> code réel
 
 Usage :
-  docs-drift check [--cwd <dir>] [--stale <durée>]  Vérifie la documentation (défaut)
-  docs-drift init [--force]                         Génère ${CONFIG_FILENAME}
-  docs-drift explain <rule>                         Documentation détaillée d'une règle
-  docs-drift --help | -h                            Affiche cette aide
-  docs-drift --version | -v                         Affiche la version
+  docs-drift check [options]    Vérifie la documentation du dépôt (défaut)
+  docs-drift init [--force]     Génère ${CONFIG_FILENAME}
+  docs-drift explain <rule>     Documentation détaillée d'une règle
+  docs-drift --help | -h        Affiche cette aide
+  docs-drift --version | -v     Affiche la version
+
+Options de check :
+  --cwd <dir>                   Dossier cible à analyser
+  --stale <durée>               Seuil de fraîcheur Git (ex. 90d, 12w, 48h)
+  --format <fmt>                Format de sortie : text (défaut), json, sarif, markdown
+  --fix                         Corrige prudemment les chemins déplacés sans ambiguïté
+  --dry-run                     Prévisualise --fix sans modifier les fichiers
 
 Règles disponibles :
   paths/exists        Existence des chemins, dossiers et médias locaux
@@ -46,12 +60,18 @@ export interface CliResult {
 interface ParsedCliOptions {
   cwd: string;
   staleMaxAge?: string;
+  format: OutputFormat;
+  fix: boolean;
+  dryRun: boolean;
   remaining: string[];
 }
 
 function parseCliOptions(args: readonly string[], defaultCwd: string): ParsedCliOptions {
   let cwd = defaultCwd;
   let staleMaxAge: string | undefined;
+  let format: OutputFormat = 'text';
+  let fix = false;
+  let dryRun = false;
   const remaining: string[] = [];
 
   for (let i = 0; i < args.length; i += 1) {
@@ -70,20 +90,45 @@ function parseCliOptions(args: readonly string[], defaultCwd: string): ParsedCli
       }
       staleMaxAge = next;
       i += 1;
+    } else if (arg === '--format') {
+      const next = args[i + 1] as OutputFormat | undefined;
+      if (!next || !VALID_FORMATS.has(next)) {
+        throw new ConfigError('Option --format attend : text, json, sarif ou markdown.');
+      }
+      format = next;
+      i += 1;
+    } else if (arg === '--fix') {
+      fix = true;
+    } else if (arg === '--dry-run') {
+      dryRun = true;
     } else if (arg !== undefined) {
       remaining.push(arg);
     }
   }
 
-  const result: ParsedCliOptions = { cwd, remaining };
+  const result: ParsedCliOptions = { cwd, format, fix, dryRun, remaining };
   if (staleMaxAge !== undefined) result.staleMaxAge = staleMaxAge;
   return result;
+}
+
+function formatReport(format: OutputFormat, summary: ReturnType<typeof runCheck>): string {
+  switch (format) {
+    case 'json':
+      return formatJsonReport(summary, VERSION);
+    case 'sarif':
+      return formatSarifReport(summary, VERSION);
+    case 'markdown':
+      return formatMarkdownReport(summary);
+    case 'text':
+    default:
+      return formatTextReport(summary);
+  }
 }
 
 /** Exécute la CLI avec une liste d'arguments (sans node/script) */
 export function runCli(args: readonly string[], defaultCwd = process.cwd()): CliResult {
   try {
-    const { cwd, staleMaxAge, remaining } = parseCliOptions(args, defaultCwd);
+    const { cwd, staleMaxAge, format, fix, dryRun, remaining } = parseCliOptions(args, defaultCwd);
     const [command = 'check', ...rest] = remaining;
 
     if (command === '--help' || command === '-h' || command === 'help') {
@@ -144,13 +189,37 @@ export function runCli(args: readonly string[], defaultCwd = process.cwd()): Cli
     }
 
     if (command === 'check') {
-      const checkOpts: RunCheckOptions = { rootDir: cwd };
+      const config = loadConfig(cwd);
+      const checkOpts: RunCheckOptions = { rootDir: cwd, config };
       if (staleMaxAge !== undefined) checkOpts.staleMaxAge = staleMaxAge;
-      const summary = runCheck(checkOpts);
-      const report = formatTextReport(summary);
+
+      let summary = runCheck(checkOpts);
+      let fixNotice = '';
+
+      if (fix) {
+        const fixSummary = applyPrudentFixes(cwd, summary.violations, config.exclude, dryRun);
+        if (format === 'text' && (fixSummary.applied.length > 0 || fixSummary.skipped.length > 0)) {
+          const lines: string[] = [];
+          const verb = dryRun ? 'Prévisualisation --fix (dry-run)' : 'Corrections --fix appliquées';
+          lines.push(`${verb} : ${fixSummary.applied.length} corrigée(s), ${fixSummary.skipped.length} ignorée(s)`);
+          for (const item of fixSummary.applied) {
+            lines.push(`  FIX  ${item.file}:${item.line} ${item.from} -> ${item.to}`);
+          }
+          for (const item of fixSummary.skipped) {
+            lines.push(`  SKIP ${item.file}:${item.line} ${item.reference} (${item.reason})`);
+          }
+          lines.push('');
+          fixNotice = `${lines.join('\n')}\n`;
+        }
+        if (!dryRun && fixSummary.applied.length > 0) {
+          summary = runCheck(checkOpts);
+        }
+      }
+
+      const report = formatReport(format, summary);
       return {
         exitCode: summary.errors > 0 ? EXIT_VIOLATIONS : EXIT_OK,
-        stdout: report,
+        stdout: `${fixNotice}${report}`,
         stderr: '',
       };
     }

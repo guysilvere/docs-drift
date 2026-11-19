@@ -26,6 +26,12 @@ export {
   type StaleMapping,
 } from './config/schema.js';
 export {
+  applyPrudentFixes,
+  type AppliedFix,
+  type FixSummary,
+  type SkippedFix,
+} from './engine/fixer.js';
+export {
   applySuppressions,
   isExpired,
   parseDirectives,
@@ -36,6 +42,15 @@ export {
 export { runCheck, type RunCheckOptions } from './engine/runner.js';
 export { parseMarkdown, type ParsedMarkdown } from './markdown/parser.js';
 export { createSlugger, slugifyHeading } from './markdown/slugify.js';
+export {
+  formatJsonReport,
+  jsonReportSchema,
+  jsonViolationSchema,
+  sanitizePublicPath,
+  type JsonReport,
+} from './reporters/json.js';
+export { formatMarkdownReport } from './reporters/markdown.js';
+export { formatSarifReport, type SarifReport } from './reporters/sarif.js';
 export { formatTextReport } from './reporters/text.js';
 export { isKnownRule, RULES_REGISTRY } from './rules/registry.js';
 export type { CheckSummary, RuleId, RuleMetadata, Violation } from './types.js';
