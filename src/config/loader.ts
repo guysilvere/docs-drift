@@ -13,7 +13,7 @@ export class ConfigError extends Error {
 }
 
 export const DEFAULT_CONFIG_TEMPLATE = `# Configuration docs-drift
-# Documentation : https://github.com/agencebulles/docs-drift
+# Documentation : https://github.com/guysilvere/docs-drift
 
 include:
   - "**/*.md"

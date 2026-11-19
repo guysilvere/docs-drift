@@ -35,7 +35,7 @@ Les vérificateurs de liens classiques ne testent que les URLs HTTP externes. **
 
 ```bash
 # Cloner le dépôt
-git clone https://github.com/agencebulles/docs-drift.git
+git clone https://github.com/guysilvere/docs-drift.git
 cd docs-drift
 
 # Installer et compiler
