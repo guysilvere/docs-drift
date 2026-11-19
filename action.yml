@@ -1,4 +1,4 @@
-name: 'docs-drift'
+name: 'docs-drift-cli'
 description: 'Vérifie la cohérence stricte entre documentation Markdown et code réel (100 % local, sans exécution de code tiers)'
 branding:
   icon: 'check-circle'

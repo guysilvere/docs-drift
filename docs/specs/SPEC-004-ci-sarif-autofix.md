@@ -11,7 +11,7 @@
 
 - En tant qu'équipe, je veux bloquer une PR via GitHub Action si une référence critique est cassée.
 - En tant que reviewer, je veux voir les violations annotées directement sur la PR via SARIF.
-- En tant que développeur, je veux lancer `npx docs-drift check --fix` pour réparer automatiquement les chemins renommés sans ambiguïté.
+- En tant que développeur, je veux lancer `npx docs-drift-cli check --fix` pour réparer automatiquement les chemins renommés sans ambiguïté.
 
 ## 3. Exigences
 

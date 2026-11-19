@@ -1,4 +1,4 @@
-# docs-drift
+# docs-drift-cli
 
 > [English](./README.md) | **Français**
 >
@@ -11,7 +11,7 @@
 
 ---
 
-## Pourquoi `docs-drift` ?
+## Pourquoi `docs-drift-cli` ?
 
 Dans un projet moderne — et encore plus dans un projet assisté par des agents IA (`AGENTS.md`, `BLUEPRINT.md`, `DATABASE.md`, `SPEC-*.md`, `README.md`) — la documentation sert de **source de vérité technique**.
 
@@ -21,7 +21,7 @@ Pourtant, à chaque refactoring :
 - un script `package.json` est renommé → le `README.md` recommande une commande qui n'existe plus ;
 - une variable d'environnement, une route API ou une table SQL évolue → humains et agents IA travaillent sur des informations périmées.
 
-Les vérificateurs de liens classiques ne testent que les URLs HTTP externes. **`docs-drift`** contrôle directement la **cohérence entre votre Markdown et votre dépôt**, en local comme en CI, en moins de 5 secondes.
+Les vérificateurs de liens classiques ne testent que les URLs HTTP externes. **`docs-drift-cli`** contrôle directement la **cohérence entre votre Markdown et votre dépôt**, en local comme en CI, en moins de 5 secondes.
 
 ### Principes de conception
 
@@ -44,8 +44,8 @@ npx docs-drift-cli check
 
 # Ou installer en dépendance de développement
 npm install -D docs-drift-cli
-npx docs-drift init
-npx docs-drift check
+npx docs-drift-cli init
+npx docs-drift-cli check
 ```
 
 ### Commandes CLI
@@ -159,7 +159,7 @@ rules:
   sql/schema: error        # error | warn | off
 ```
 
-Si aucun `.docs-drift.yml` n'est présent, `docs-drift` applique automatiquement ces valeurs par défaut.
+Si aucun `.docs-drift.yml` n'est présent, `docs-drift-cli` applique automatiquement ces valeurs par défaut.
 
 ---
 
@@ -172,7 +172,7 @@ Utilisez directement la GitHub Action composite ([action.yml](./action.yml)) dan
   with:
     fetch-depth: 0
 
-- uses: guysilvere/docs-drift@v0.4.0
+- uses: guysilvere/docs-drift-cli@v0.5.0
   with:
     format: text
     stale: 90d
@@ -195,7 +195,7 @@ npm run build      # Compilation TypeScript vers dist/
 ### Architecture du projet
 
 ```text
-docs-drift/
+docs-drift-cli/
 ├── src/
 │   ├── cli.ts                  # Point d'entrée CLI (check, init, explain)
 │   ├── index.ts                # Exports programmatiques

@@ -1,4 +1,4 @@
-# BLUEPRINT — docs-drift
+# BLUEPRINT — docs-drift-cli
 
 > [English](../BLUEPRINT.md) | **Français** · Statut : VALIDATED · Stack : TypeScript strict + Node CLI + GitHub Action · Silvere Meya
 
@@ -11,7 +11,7 @@
 
 ## 2. Proposition de valeur
 
-- `docs-drift` est un linter local et CI ultra-rapide qui détecte les références techniques périmées dans le Markdown et propose des corrections actionnables avant qu'un humain ou un agent ne s'appuie dessus.
+- `docs-drift-cli` est un linter local et CI ultra-rapide qui détecte les références techniques périmées dans le Markdown et propose des corrections actionnables avant qu'un humain ou un agent ne s'appuie dessus.
 
 ## 3. Stack technique
 
@@ -79,12 +79,12 @@
 ## 6. Interface CLI & performances
 
 - Commandes :
-  - `npx docs-drift check` (défaut)
-  - `npx docs-drift check --stale 90d`
-  - `npx docs-drift check --format sarif|json|markdown`
-  - `npx docs-drift check --fix`
-  - `npx docs-drift init`
-  - `npx docs-drift explain <rule>`
+  - `npx docs-drift-cli check` (défaut)
+  - `npx docs-drift-cli check --stale 90d`
+  - `npx docs-drift-cli check --format sarif|json|markdown`
+  - `npx docs-drift-cli check --fix`
+  - `npx docs-drift-cli init`
+  - `npx docs-drift-cli explain <rule>`
 - Sortie lisible sans couleur ; codes de sortie stables : `0` (propre), `1` (violations), `2` (erreur de config/outil).
 - Pas de PWA ni de serveur.
 - Performance cible : `< 5 s` sur un dépôt moyen (hors installation).

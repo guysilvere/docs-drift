@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# Règles projet — docs-drift
+# Règles projet — docs-drift-cli
 
 - **Type** : CLI Node.js + TypeScript strict (ESM) + GitHub Action. Pas de serveur, pas de base de données, pas de PWA.
 - **Source de vérité** : [AGENTS.md](../../AGENTS.md), [docs/BLUEPRINT.md](../../docs/BLUEPRINT.md), [docs/ROADMAP.md](../../docs/ROADMAP.md) et [docs/specs/](../../docs/specs/).

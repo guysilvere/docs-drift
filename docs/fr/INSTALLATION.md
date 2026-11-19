@@ -1,4 +1,4 @@
-# Guide d'installation — docs-drift
+# Guide d'installation — docs-drift-cli
 
 > [English](../INSTALLATION.md) | **Français** · Version : `v0.5.0` · Paquet : `docs-drift-cli` · Prérequis : **Node.js >= 20** et **Git** (optionnel pour `git/stale`).
 
@@ -12,8 +12,8 @@ npx docs-drift-cli check
 
 # Ou ajouter en devDependency de votre projet
 npm install -D docs-drift-cli
-npx docs-drift init
-npx docs-drift check
+npx docs-drift-cli init
+npx docs-drift-cli check
 ```
 
 ## 1bis. Installation locale depuis les sources (Contributeurs)
@@ -21,8 +21,8 @@ npx docs-drift check
 ### Option A — Cloner et compiler depuis GitHub
 
 ```bash
-git clone https://github.com/guysilvere/docs-drift.git
-cd docs-drift
+git clone https://github.com/guysilvere/docs-drift-cli.git
+cd docs-drift-cli
 npm ci
 npm run build
 ```
@@ -34,7 +34,7 @@ node dist/cli.js --version
 node dist/cli.js check
 ```
 
-### Option B — Rendre la commande `docs-drift` globale sur votre machine
+### Option B — Rendre la commande `docs-drift-cli` globale sur votre machine
 
 Depuis le dossier cloné :
 
@@ -42,7 +42,7 @@ Depuis le dossier cloné :
 npm link
 ```
 
-Vous pouvez ensuite exécuter `docs-drift` dans **n'importe quel projet** :
+Vous pouvez ensuite exécuter `docs-drift-cli` dans **n'importe quel projet** :
 
 ```bash
 cd /chemin/vers/mon-projet
@@ -106,7 +106,7 @@ stale:
 
 ## 3. Intégration CI — GitHub Actions
 
-`docs-drift` fournit une **GitHub Action composite** ([action.yml](../../action.yml)) 100 % locale qui n'exécute jamais de script de votre dépôt.
+`docs-drift-cli` fournit une **GitHub Action composite** ([action.yml](../../action.yml)) 100 % locale qui n'exécute jamais de script de votre dépôt.
 
 ### Exemple minimal (bloque la PR sur erreur)
 
@@ -128,7 +128,7 @@ jobs:
         with:
           fetch-depth: 0 # Requis uniquement si vous utilisez --stale
 
-      - uses: guysilvere/docs-drift@v0.4.0
+      - uses: guysilvere/docs-drift-cli@v0.5.0
         with:
           format: text
           stale: 90d
@@ -152,7 +152,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: guysilvere/docs-drift@v0.4.0
+      - uses: guysilvere/docs-drift-cli@v0.5.0
         continue-on-error: true
         with:
           format: sarif
