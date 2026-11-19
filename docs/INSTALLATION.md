@@ -1,12 +1,12 @@
-# Guide d'installation — docs-drift
+# Installation Guide — docs-drift
 
-> Version : `v0.4.0` · Prérequis : **Node.js >= 20** et **Git** (optionnel pour `git/stale`).
+> **English** | [Français](./fr/INSTALLATION.md) · Version: `v0.4.0` · Requirements: **Node.js >= 20** and **Git** (optional for `git/stale`).
 
 ---
 
-## 1. Installation locale (développement ou usage CLI)
+## 1. Local Installation (CLI / Development)
 
-### Option A — Cloner et compiler depuis GitHub
+### Option A — Clone and Build from GitHub
 
 ```bash
 git clone https://github.com/guysilvere/docs-drift.git
@@ -15,40 +15,40 @@ npm ci
 npm run build
 ```
 
-Vérifiez l'installation :
+Verify the installation:
 
 ```bash
 node dist/cli.js --version
 node dist/cli.js check
 ```
 
-### Option B — Rendre la commande `docs-drift` globale sur votre machine
+### Option B — Make `docs-drift` Globally Available
 
-Depuis le dossier cloné :
+From the cloned directory:
 
 ```bash
 npm link
 ```
 
-Vous pouvez ensuite exécuter `docs-drift` dans **n'importe quel projet** :
+You can then run `docs-drift` in **any project**:
 
 ```bash
-cd /chemin/vers/mon-projet
+cd /path/to/your-project
 docs-drift init
 docs-drift check
 ```
 
 ---
 
-## 2. Initialiser un projet cible
+## 2. Initialize a Target Project
 
-À la racine du projet que vous souhaitez contrôler :
+At the root of the repository you want to lint:
 
 ```bash
 docs-drift init
 ```
 
-Cette commande crée `.docs-drift.yml` avec des valeurs sûres par défaut :
+This creates `.docs-drift.yml` with safe defaults:
 
 ```yaml
 include:
@@ -71,12 +71,12 @@ rules:
   sql/schema: error
 ```
 
-### Adapter la configuration à votre stack
+### Adapting Configuration to Your Stack
 
-- **Variables d'environnement** : si votre template n'est pas `.env.example`, précisez `envFile: ".env.template"`. Pour exclure des variables spécifiques, utilisez `ignoreEnv: ["CUSTOM_CI_VAR"]`.
-- **SvelteKit** : les routes sont lues dans `src/routes` (modifiable via `sveltekitRoutesDir`). Si le dossier n'existe pas, la règle `sveltekit/routes` se désactive automatiquement.
-- **SQL / Migrations** : les fichiers `migrations/**/*.sql` et `drizzle/**/*.sql` sont analysés statiquement (modifiable via `sqlMigrations`).
-- **Dérive Git (`git/stale`)** : associez vos dossiers de code à leurs documents critiques :
+- **Environment variables**: if your template file is not `.env.example`, set `envFile: ".env.template"`. Exclude custom variables with `ignoreEnv: ["CUSTOM_CI_VAR"]`.
+- **SvelteKit**: routes are read from `src/routes` (override with `sveltekitRoutesDir`). If the directory does not exist, `sveltekit/routes` is skipped automatically.
+- **SQL / Migrations**: `migrations/**/*.sql` and `drizzle/**/*.sql` are parsed statically (override with `sqlMigrations`).
+- **Git drift (`git/stale`)**: map code globs to critical documentation files:
 
 ```yaml
 stale:
@@ -92,13 +92,13 @@ stale:
 
 ---
 
-## 3. Intégration CI — GitHub Actions
+## 3. CI Integration — GitHub Actions
 
-`docs-drift` fournit une **GitHub Action composite** ([action.yml](../action.yml)) 100 % locale qui n'exécute jamais de script de votre dépôt.
+`docs-drift` ships a 100% local **composite GitHub Action** ([action.yml](../action.yml)) that never executes any script from your repository.
 
-### Exemple minimal (bloque la PR sur erreur)
+### Minimal Workflow (Fails PR on Error)
 
-Créez `.github/workflows/docs-drift.yml` dans votre projet (épinglez de préférence par **commit SHA** en production) :
+Create `.github/workflows/docs-drift.yml` (prefer pinning to a full **commit SHA** in production):
 
 ```yaml
 name: Docs Drift
@@ -114,7 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Requis uniquement si vous utilisez --stale
+          fetch-depth: 0 # Only required when using --stale
 
       - uses: guysilvere/docs-drift@v0.4.0
         with:
@@ -122,7 +122,7 @@ jobs:
           stale: 90d
 ```
 
-### Exemple avancé — Annotations GitHub Code Scanning (SARIF)
+### Advanced Workflow — GitHub Code Scanning Annotations (SARIF)
 
 ```yaml
 name: Docs Drift (SARIF)
@@ -153,25 +153,25 @@ jobs:
 
 ---
 
-## 4. Correction automatique prudente (`--fix`)
+## 4. Prudent Auto-Fix (`--fix`)
 
-Lorsque vous déplacez un fichier sans le renommer, prévisualisez puis appliquez les corrections :
+When files have been moved without renaming, preview and apply safe fixes:
 
 ```bash
-# Prévisualisation sans modifier vos fichiers
+# Preview without modifying files
 docs-drift check --fix --dry-run
 
-# Application des corrections non ambiguës
+# Apply unambiguous fixes
 docs-drift check --fix
 ```
 
-> Si plusieurs fichiers portent le même nom dans le dépôt, `--fix` refuse de deviner et vous signale l'ambiguïté.
+> If multiple files share the same basename in the repository, `--fix` refuses to guess and reports the ambiguity.
 
 ---
 
-## 5. Hook Git pré-commit (optionnel)
+## 5. Pre-Commit Git Hook (Optional)
 
-Pour bloquer localement un commit qui casse la documentation, ajoutez dans `.git/hooks/pre-commit` (puis `chmod +x .git/hooks/pre-commit`) :
+To block local commits that introduce documentation drift, add `.git/hooks/pre-commit` (then `chmod +x .git/hooks/pre-commit`):
 
 ```bash
 #!/usr/bin/env bash
@@ -181,11 +181,11 @@ docs-drift check
 
 ---
 
-## 6. Dépannage
+## 6. Troubleshooting
 
-- **Code de sortie `2`** : votre `.docs-drift.yml` ou une option CLI (`--format`, `--stale`) est invalide. Lisez le message sur `stderr`.
-- **Avertissement `shallow clone`** : ajoutez `fetch-depth: 0` dans `actions/checkout@v4` si vous activez `git/stale`.
-- **Faux positif ponctuel** : utilisez une directive inline datée :
+- **Exit code `2`**: invalid `.docs-drift.yml` or CLI flag (`--format`, `--stale`). Check `stderr` for exact details.
+- **`shallow clone` warning**: set `fetch-depth: 0` on `actions/checkout@v4` when using `git/stale`.
+- **One-off false positive**: add an expiring inline directive:
   ```markdown
-  <!-- docs-drift: ignore-next-line paths/exists reason="Migration en cours" expires="2026-12-31" -->
+  <!-- docs-drift: ignore-next-line paths/exists reason="Migration in progress" expires="2026-12-31" -->
   ```
