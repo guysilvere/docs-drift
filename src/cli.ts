@@ -2,29 +2,34 @@
 import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { parseDurationMs } from './collectors/git.js';
 import { CONFIG_FILENAME, ConfigError, writeDefaultConfig } from './config/loader.js';
-import { runCheck } from './engine/runner.js';
+import { runCheck, type RunCheckOptions } from './engine/runner.js';
 import { formatTextReport } from './reporters/text.js';
 import { isKnownRule, RULES_REGISTRY } from './rules/registry.js';
 
 export const EXIT_OK = 0;
 export const EXIT_VIOLATIONS = 1;
 export const EXIT_ERROR = 2;
-export const VERSION = '0.1.0';
+export const VERSION = '0.3.0';
 
 const HELP_TEXT = `docs-drift v${VERSION} — Linter de cohérence documentation Markdown <-> code réel
 
 Usage :
-  docs-drift check [--cwd <dir>]    Vérifie la documentation du dépôt (défaut)
-  docs-drift init [--force]         Génère un fichier ${CONFIG_FILENAME} minimal
-  docs-drift explain <rule>         Affiche la documentation d'une règle
-  docs-drift --help | -h            Affiche cette aide
-  docs-drift --version | -v         Affiche la version
+  docs-drift check [--cwd <dir>] [--stale <durée>]  Vérifie la documentation (défaut)
+  docs-drift init [--force]                         Génère ${CONFIG_FILENAME}
+  docs-drift explain <rule>                         Documentation détaillée d'une règle
+  docs-drift --help | -h                            Affiche cette aide
+  docs-drift --version | -v                         Affiche la version
 
 Règles disponibles :
-  paths/exists                      Existence des chemins, dossiers et médias locaux
-  anchors/exists                    Validité des ancres Markdown locales (#section)
-  scripts/exists                    Existence des scripts npm/pnpm/yarn dans package.json
+  paths/exists        Existence des chemins, dossiers et médias locaux
+  anchors/exists      Validité des ancres Markdown locales (#section)
+  scripts/exists      Existence des scripts npm/pnpm/yarn dans package.json
+  env/exists          Cohérence des variables d'environnement (.env.example)
+  git/stale           Dérive temporelle (--stale 90d) et delta code/doc
+  sveltekit/routes    Routes API et méthodes HTTP SvelteKit (+server.ts)
+  sql/schema          Tables et colonnes SQL issues des migrations
 
 Codes de sortie :
   0  Aucune violation
@@ -38,8 +43,15 @@ export interface CliResult {
   stderr: string;
 }
 
-function parseCwdOption(args: readonly string[], defaultCwd: string): { cwd: string; remaining: string[] } {
+interface ParsedCliOptions {
+  cwd: string;
+  staleMaxAge?: string;
+  remaining: string[];
+}
+
+function parseCliOptions(args: readonly string[], defaultCwd: string): ParsedCliOptions {
   let cwd = defaultCwd;
+  let staleMaxAge: string | undefined;
   const remaining: string[] = [];
 
   for (let i = 0; i < args.length; i += 1) {
@@ -51,18 +63,27 @@ function parseCwdOption(args: readonly string[], defaultCwd: string): { cwd: str
       }
       cwd = resolve(defaultCwd, next);
       i += 1;
+    } else if (arg === '--stale') {
+      const next = args[i + 1];
+      if (!next || parseDurationMs(next) === null) {
+        throw new ConfigError('Option --stale attend une durée valide (ex. 90d, 12w, 48h).');
+      }
+      staleMaxAge = next;
+      i += 1;
     } else if (arg !== undefined) {
       remaining.push(arg);
     }
   }
 
-  return { cwd, remaining };
+  const result: ParsedCliOptions = { cwd, remaining };
+  if (staleMaxAge !== undefined) result.staleMaxAge = staleMaxAge;
+  return result;
 }
 
 /** Exécute la CLI avec une liste d'arguments (sans node/script) */
 export function runCli(args: readonly string[], defaultCwd = process.cwd()): CliResult {
   try {
-    const { cwd, remaining } = parseCwdOption(args, defaultCwd);
+    const { cwd, staleMaxAge, remaining } = parseCliOptions(args, defaultCwd);
     const [command = 'check', ...rest] = remaining;
 
     if (command === '--help' || command === '-h' || command === 'help') {
@@ -123,7 +144,9 @@ export function runCli(args: readonly string[], defaultCwd = process.cwd()): Cli
     }
 
     if (command === 'check') {
-      const summary = runCheck({ rootDir: cwd });
+      const checkOpts: RunCheckOptions = { rootDir: cwd };
+      if (staleMaxAge !== undefined) checkOpts.staleMaxAge = staleMaxAge;
+      const summary = runCheck(checkOpts);
       const report = formatTextReport(summary);
       return {
         exitCode: summary.errors > 0 ? EXIT_VIOLATIONS : EXIT_OK,

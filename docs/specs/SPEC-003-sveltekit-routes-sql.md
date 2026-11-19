@@ -1,6 +1,6 @@
 # SPEC-003 — Routes SvelteKit et migrations SQL
 
-> Statut : DRAFT · Jalon : 3 (`v0.3.0`) · Référence : [BLUEPRINT.md](../BLUEPRINT.md)
+> Statut : DONE · Jalon : 3 (`v0.3.0`) · Référence : [BLUEPRINT.md](../BLUEPRINT.md)
 
 ## 1. Intent
 

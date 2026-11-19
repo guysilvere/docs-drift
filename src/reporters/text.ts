@@ -14,8 +14,10 @@ export function formatTextReport(summary: CheckSummary): string {
   }
 
   const status = summary.errors > 0 ? 'FAIL' : 'OK';
+  const suppressedPart =
+    summary.suppressed > 0 ? `, ${summary.suppressed} ignorée(s)` : '';
   lines.push(
-    `docs-drift ${status} — ${summary.filesChecked} fichier(s) analysé(s), ${summary.errors} erreur(s), ${summary.warnings} avertissement(s) (${summary.durationMs} ms)`,
+    `docs-drift ${status} — ${summary.filesChecked} fichier(s) analysé(s), ${summary.errors} erreur(s), ${summary.warnings} avertissement(s)${suppressedPart} (${summary.durationMs} ms)`,
   );
 
   return `${lines.join('\n')}\n`;

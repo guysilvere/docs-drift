@@ -52,6 +52,7 @@ node dist/cli.js check
 | --- | --- |
 | `docs-drift check` | Vérifie tous les fichiers Markdown du dépôt (commande par défaut) |
 | `docs-drift check --cwd <dir>` | Cible un autre dossier de dépôt |
+| `docs-drift check --stale <durée>` | Détecte la documentation plus ancienne que `<durée>` (ex. `90d`, `12w`, `48h`) |
 | `docs-drift init` | Génère un fichier `.docs-drift.yml` prêt à l'emploi |
 | `docs-drift init --force` | Écrase un fichier `.docs-drift.yml` existant |
 | `docs-drift explain <rule>` | Affiche la documentation et des exemples pour une règle |
@@ -78,20 +79,33 @@ docs-drift FAIL — 8 fichier(s) analysé(s), 3 erreur(s), 0 avertissement(s) (1
 
 ---
 
-## Règles disponibles
-
-### Jalon 1 (`v0.1.0` — disponible)
+## Règles disponibles (`v0.3.0`)
 
 | Règle | Sévérité par défaut | Ce qu'elle vérifie |
 | --- | --- | --- |
 | `paths/exists` | `error` | Chaque lien relatif, dossier, image locale ou référence `file://` existe bien sur disque. |
 | `anchors/exists` | `error` | Chaque ancre `#section` (dans le même fichier ou vers un autre `.md`) correspond à un titre existant (slug compatible GitHub). |
 | `scripts/exists` | `error` | Chaque commande `npm run <cmd>`, `pnpm run <cmd>` ou `yarn run <cmd>` citée existe dans `package.json`. |
+| `env/exists` | `error` | Chaque variable d'environnement documentée (`process.env.X`, `import.meta.env.X`, `$X`, blocs `env`) existe dans `.env.example`. |
+| `git/stale` | `warn` | Détecte les docs non mises à jour depuis `--stale <durée>` ou en retard sur les fichiers de code mappés. |
+| `sveltekit/routes` | `error` | Vérifie les routes API et méthodes HTTP documentées (`GET /api/users/:id`) contre `src/routes/**/+server.ts` et `+page.svelte`. |
+| `sql/schema` | `error` | Reconstruit statiquement le schéma SQL depuis `migrations/**/*.sql` et vérifie les tables/colonnes documentées (`DATABASE.md`, blocs `sql`, `sql:table.col`). |
 
-### Prochains jalons (voir [ROADMAP](./docs/ROADMAP.md))
+### Balises inline & exceptions datées
 
-- **Jalon 2 (`v0.2.0`)** : `env/exists` (`.env.example`), `git/stale` (`--stale 90d` et delta code/doc), balises `<!-- docs-drift: ... -->`, exceptions datées.
-- **Jalon 3 (`v0.3.0`)** : routes SvelteKit (`+server.ts`, `+page.svelte`) et migrations SQL (tables & colonnes).
+Vous pouvez ignorer ponctuellement une règle avec justification et date d'expiration (une exception expirée remonte automatiquement en avertissement) :
+
+```markdown
+<!-- docs-drift: ignore-next-line paths/exists reason="Migration en cours" expires="2026-12-31" -->
+Voir [ancien guide](./docs/legacy.md).
+
+<!-- docs-drift: disable scripts/exists -->
+...
+<!-- docs-drift: enable scripts/exists -->
+```
+
+### Prochain jalon (voir [ROADMAP](./docs/ROADMAP.md))
+
 - **Jalon 4 (`v1.0.0`)** : sorties JSON / SARIF 2.1.0 / Markdown PR, GitHub Action composite, mode `--fix` prudent.
 
 ---
@@ -111,10 +125,33 @@ exclude:
   - "build/**"
   - ".svelte-kit/**"
 
+envFile: ".env.example"
+ignoreEnv: []
+sveltekitRoutesDir: "src/routes"
+sqlMigrations:
+  - "migrations/**/*.sql"
+  - "drizzle/**/*.sql"
+
+stale:
+  maxAge: "90d"
+  mappings:
+    - doc: "docs/DATABASE.md"
+      code: ["migrations/**", "src/lib/server/db/**"]
+
+exceptions:
+  - file: "README.md"
+    rule: "paths/exists"
+    reason: "Lien en cours de migration"
+    expires: "2026-12-31"
+
 rules:
   paths/exists: error      # error | warn | off
   anchors/exists: error    # error | warn | off
   scripts/exists: error    # error | warn | off
+  env/exists: error        # error | warn | off
+  git/stale: warn          # error | warn | off
+  sveltekit/routes: error  # error | warn | off
+  sql/schema: error        # error | warn | off
 ```
 
 Si aucun `.docs-drift.yml` n'est présent, `docs-drift` applique automatiquement ces valeurs par défaut.

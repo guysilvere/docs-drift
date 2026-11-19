@@ -29,6 +29,10 @@ rules:
   paths/exists: error
   anchors/exists: error
   scripts/exists: error
+  env/exists: error
+  git/stale: warn
+  sveltekit/routes: error
+  sql/schema: error
 `;
 
 /** Charge et valide `.docs-drift.yml` depuis `rootDir`, ou retourne les défauts */

@@ -7,8 +7,8 @@
 | Version | Jalon | Objectif principal | Specs | Statut |
 | --- | --- | --- | --- | --- |
 | `v0.1.0` | Jalon 1 — Socle MVP | CLI, config `.docs-drift.yml`, chemins, médias, ancres locales, scripts `package.json` | [SPEC-001](./specs/SPEC-001-cli-paths-anchors-scripts.md) | `DONE` |
-| `v0.2.0` | Jalon 2 — Env & fraîcheur | Variables `.env.example`, dérive Git (`--stale`), balises `<!-- docs-drift: ... -->`, exceptions datées | [SPEC-002](./specs/SPEC-002-env-stale-annotations.md) | `PLANNED` |
-| `v0.3.0` | Jalon 3 — Code & schémas | Routes SvelteKit (`+server.ts`, `+page.svelte`), migrations SQL (tables & colonnes) | [SPEC-003](./specs/SPEC-003-sveltekit-routes-sql.md) | `PLANNED` |
+| `v0.2.0` | Jalon 2 — Env & fraîcheur | Variables `.env.example`, dérive Git (`--stale`), balises `<!-- docs-drift: ... -->`, exceptions datées | [SPEC-002](./specs/SPEC-002-env-stale-annotations.md) | `DONE` |
+| `v0.3.0` | Jalon 3 — Code & schémas | Routes SvelteKit (`+server.ts`, `+page.svelte`), migrations SQL (tables & colonnes) | [SPEC-003](./specs/SPEC-003-sveltekit-routes-sql.md) | `DONE` |
 | `v1.0.0` | Jalon 4 — CI & finition | Sorties JSON/SARIF/Markdown, GitHub Action composite, `--fix` prudent, publication npm | [SPEC-004](./specs/SPEC-004-ci-sarif-autofix.md) | `PLANNED` |
 | `v2.0.0` | Écosystème élargi | Extracteurs Drizzle, Prisma, Rails, Django ; vérification bidirectionnelle code ↔ docs | — | `BACKLOG` |
 | `v3.0.0` | Temps réel & gouvernance | Mode `--watch` pour agents IA, plugin éditeur, règles d'organisation | — | `BACKLOG` |

@@ -31,6 +31,46 @@ export const RULES_REGISTRY: Record<RuleId, RuleMetadata> = {
       valid: 'npm run build',
     },
   },
+  'env/exists': {
+    id: 'env/exists',
+    title: 'Cohérence des variables d’environnement (.env.example)',
+    summary:
+      'Vérifie que chaque variable d’environnement documentée (process.env.X, import.meta.env.X, $X, ou bloc env) existe bien dans .env.example.',
+    examples: {
+      invalid: 'process.env.LEGACY_STRIPE_KEY',
+      valid: 'process.env.PAYMENT_API_KEY',
+    },
+  },
+  'git/stale': {
+    id: 'git/stale',
+    title: 'Dérive temporelle et delta Git code/doc',
+    summary:
+      'Détecte les documents critiques non mis à jour au-delà de --stale <durée> ou en retard par rapport aux fichiers de code associés.',
+    examples: {
+      invalid: 'docs/DATABASE.md (dernier commit il y a 120j alors que migrations/ a changé)',
+      valid: 'docs/DATABASE.md mis à jour dans le même lot que migrations/',
+    },
+  },
+  'sveltekit/routes': {
+    id: 'sveltekit/routes',
+    title: 'Cohérence des routes SvelteKit (+server.ts / +page.svelte)',
+    summary:
+      'Vérifie que les routes API et méthodes HTTP documentées (ex. POST /api/orders) existent réellement dans src/routes/.',
+    examples: {
+      invalid: 'DELETE /api/v1/legacy-items/:id',
+      valid: 'GET /api/users/[id]',
+    },
+  },
+  'sql/schema': {
+    id: 'sql/schema',
+    title: 'Cohérence des tables et colonnes SQL (migrations)',
+    summary:
+      'Compare les tables et colonnes SQL documentées (blocs sql, DATABASE.md ou <!-- docs-drift: sql -->) au schéma reconstruit statiquement depuis les migrations.',
+    examples: {
+      invalid: 'SELECT old_col FROM deleted_table',
+      valid: 'SELECT id, email FROM users',
+    },
+  },
 };
 
 export function isKnownRule(id: string): id is RuleId {
