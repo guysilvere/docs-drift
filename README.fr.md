@@ -4,6 +4,7 @@
 >
 > **Linter local et CI qui garantit que votre documentation Markdown reste toujours alignée avec votre vrai code.**
 
+[![npm version](https://img.shields.io/npm/v/docs-drift-cli.svg)](https://www.npmjs.com/package/docs-drift-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Node.js >= 20](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org)
 [![TypeScript Strict](https://img.shields.io/badge/TypeScript-strict-3178C6.svg)](https://www.typescriptlang.org)
@@ -33,21 +34,18 @@ Les vérificateurs de liens classiques ne testent que les URLs HTTP externes. **
 
 ## Démarrage rapide
 
-### Installation & exécution locale
+### Installation rapide (npm)
 
-> Consultez le [Guide d'installation détaillé](./docs/fr/INSTALLATION.md) pour la configuration complète (installation globale `npm link`, GitHub Action composite, upload SARIF Code Scanning, hook pré-commit).
+> Consultez le [Guide d'installation détaillé](./docs/fr/INSTALLATION.md) pour la configuration complète (GitHub Action composite, upload SARIF Code Scanning, hook pré-commit, compilation depuis les sources).
 
 ```bash
-# Cloner le dépôt
-git clone https://github.com/guysilvere/docs-drift.git
-cd docs-drift
+# Exécuter immédiatement via npx
+npx docs-drift-cli check
 
-# Installer et compiler
-npm ci
-npm run build
-
-# Lancer la vérification sur le dépôt courant
-node dist/cli.js check
+# Ou installer en dépendance de développement
+npm install -D docs-drift-cli
+npx docs-drift init
+npx docs-drift check
 ```
 
 ### Commandes CLI
@@ -214,7 +212,8 @@ docs-drift/
 
 ### Documentation de référence
 
-- [Guide d'installation](./docs/fr/INSTALLATION.md) — installation locale, GitHub Action, SARIF et hooks Git
+- [Guide d'installation](./docs/fr/INSTALLATION.md) — npm, installation locale, GitHub Action, SARIF et hooks Git
+- [CHANGELOG](./CHANGELOG.md) — historique des versions (`v0.1.0` → `v0.5.0`)
 - [BLUEPRINT](./docs/fr/BLUEPRINT.md) — architecture, périmètre, sécurité et choix techniques
 - [ROADMAP](./docs/fr/ROADMAP.md) — feuille de route détaillée (`v0.1.0` → `v3.0.0`)
 - [Spécifications](./docs/specs/SPEC-001-cli-paths-anchors-scripts.md) — specs par jalon (`SPEC-001` à `SPEC-004`)

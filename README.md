@@ -4,6 +4,7 @@
 >
 > **Local and CI linter that keeps your Markdown documentation strictly aligned with your real codebase.**
 
+[![npm version](https://img.shields.io/npm/v/docs-drift-cli.svg)](https://www.npmjs.com/package/docs-drift-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Node.js >= 20](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org)
 [![TypeScript Strict](https://img.shields.io/badge/TypeScript-strict-3178C6.svg)](https://www.typescriptlang.org)
@@ -33,21 +34,18 @@ Traditional link checkers only test external HTTP URLs. **`docs-drift`** verifie
 
 ## Quick Start
 
-### Local Installation
+### Quick Installation (npm)
 
-> See the [Detailed Installation Guide](./docs/INSTALLATION.md) for full setup instructions (`npm link`, composite GitHub Action, SARIF Code Scanning upload, pre-commit hook).
+> See the [Detailed Installation Guide](./docs/INSTALLATION.md) for full setup instructions (composite GitHub Action, SARIF Code Scanning upload, pre-commit hook, building from source).
 
 ```bash
-# Clone the repository
-git clone https://github.com/guysilvere/docs-drift.git
-cd docs-drift
+# Run immediately with npx
+npx docs-drift-cli check
 
-# Install and build
-npm ci
-npm run build
-
-# Run against the current repository
-node dist/cli.js check
+# Or install as a dev dependency
+npm install -D docs-drift-cli
+npx docs-drift init
+npx docs-drift check
 ```
 
 ### CLI Commands
@@ -215,7 +213,8 @@ docs-drift/
 
 ### Reference Documentation
 
-- [Installation Guide](./docs/INSTALLATION.md) ([FR](./docs/fr/INSTALLATION.md)) — local setup, GitHub Action, SARIF, and Git hooks
+- [Installation Guide](./docs/INSTALLATION.md) ([FR](./docs/fr/INSTALLATION.md)) — npm, local setup, GitHub Action, SARIF, and Git hooks
+- [CHANGELOG](./CHANGELOG.md) — version history (`v0.1.0` -> `v0.5.0`)
 - [BLUEPRINT](./docs/BLUEPRINT.md) ([FR](./docs/fr/BLUEPRINT.md)) — architecture, scope, security, and stack choices
 - [ROADMAP](./docs/ROADMAP.md) ([FR](./docs/fr/ROADMAP.md)) — detailed milestones (`v0.1.0` -> `v3.0.0`)
 - [Specifications](./docs/specs/SPEC-001-cli-paths-anchors-scripts.md) — per-milestone specs (`SPEC-001` to `SPEC-004`)

@@ -10,7 +10,8 @@
 | `v0.2.0` | Jalon 2 — Env & fraîcheur | Variables `.env.example`, dérive Git (`--stale`), balises `<!-- docs-drift: ... -->`, exceptions datées | [SPEC-002](../specs/SPEC-002-env-stale-annotations.md) | `DONE` |
 | `v0.3.0` | Jalon 3 — Code & schémas | Routes SvelteKit (`+server.ts`, `+page.svelte`), migrations SQL (tables & colonnes) | [SPEC-003](../specs/SPEC-003-sveltekit-routes-sql.md) | `DONE` |
 | `v0.4.0` | Jalon 4 — CI, SARIF & `--fix` | Sorties JSON/SARIF/Markdown, GitHub Action composite, `--fix` prudent, guide d'installation | [SPEC-004](../specs/SPEC-004-ci-sarif-autofix.md) | `DONE` |
-| `v1.0.0` | Stabilisation & npm | Publication registre npm (`npx docs-drift`), stabilisation API publique, benchmarks `< 5 s` | — | `PLANNED` |
+| `v0.5.0` | Jalon 5 — Distribution npm | Paquet npm `docs-drift-cli`, workflow provenance, docs bilingues EN/FR, `CHANGELOG.md` | — | `DONE` |
+| `v1.0.0` | Stabilisation & GA | Gel API/schémas publics, tests terrain, benchmarks `< 5 s` | — | `PLANNED` |
 | `v2.0.0` | Écosystème élargi | Extracteurs Drizzle, Prisma, Rails, Django ; vérification bidirectionnelle code ↔ docs | — | `BACKLOG` |
 | `v3.0.0` | Temps réel & gouvernance | Mode `--watch` pour agents IA, plugin éditeur, règles d'organisation | — | `BACKLOG` |
 

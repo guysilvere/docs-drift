@@ -10,7 +10,8 @@
 | `v0.2.0` | Milestone 2 — Env & Freshness | `.env.example` vars, Git drift (`--stale`), `<!-- docs-drift: ... -->` directives, expiring exceptions | [SPEC-002](./specs/SPEC-002-env-stale-annotations.md) | `DONE` |
 | `v0.3.0` | Milestone 3 — Code & Schemas | SvelteKit routes (`+server.ts`, `+page.svelte`), SQL migrations (tables & columns) | [SPEC-003](./specs/SPEC-003-sveltekit-routes-sql.md) | `DONE` |
 | `v0.4.0` | Milestone 4 — CI, SARIF & `--fix` | JSON/SARIF/Markdown reporters, composite GitHub Action, prudent `--fix`, installation guide | [SPEC-004](./specs/SPEC-004-ci-sarif-autofix.md) | `DONE` |
-| `v1.0.0` | Stabilization & npm | Official npm release (`npx docs-drift`), public API stability, `< 5 s` benchmarks | — | `PLANNED` |
+| `v0.5.0` | Milestone 5 — npm Distribution | `docs-drift-cli` npm package, provenance workflow, bilingual EN/FR docs, `CHANGELOG.md` | — | `DONE` |
+| `v1.0.0` | Stabilization & GA | Public API/schema freeze, real-world battle-testing, `< 5 s` benchmarks | — | `PLANNED` |
 | `v2.0.0` | Broader Ecosystem | Drizzle, Prisma, Rails, Django extractors; bidirectional code <-> docs checks | — | `BACKLOG` |
 | `v3.0.0` | Real-Time & Governance | `--watch` mode for AI agents, editor plugin, organization rulesets | — | `BACKLOG` |
 
